@@ -39,8 +39,8 @@ public class Transaction
     {
        transaction_type = TRANSFER;
 
-       double checking_balance = current_user.getChecking_balance();
-       double savings_balance = current_user.getSavings_balance();
+       double checking_balance = current_user.getCheckingBalance();
+       double savings_balance = current_user.getSavingsBalance();
 
        //transfer from checking -> savings
        if(from_checking)
@@ -74,8 +74,8 @@ public class Transaction
           }
        }
 
-       current_user.setChecking_balance(checking_balance);
-       current_user.setSavings_balance(savings_balance);
+       current_user.setCheckingBalance(checking_balance);
+       current_user.setSavingsBalance(savings_balance);
 
     } // end transfer
 

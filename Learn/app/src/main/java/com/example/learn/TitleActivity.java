@@ -20,7 +20,9 @@ public class TitleActivity extends AppCompatActivity {
    private Button submit_button = null;
    private FloatingActionButton tesr = null;
 
-   private EditText name_field = null;
+   private EditText first_name_field = null;
+   private EditText last_name_field = null;
+
    private EditText savings_account_field = null;
    private EditText checking_account_field = null;
 
@@ -49,10 +51,10 @@ public class TitleActivity extends AppCompatActivity {
          @Override
          public void onClick(View v)
          {
-          //  createOpenPopupDialog();
-         Intent the_intent = new Intent(TitleActivity.this, MainActivity.class);
+            createOpenPopupDialog();
+         //Intent the_intent = new Intent(TitleActivity.this, MainActivity.class);
 
-        startActivity(the_intent);
+       // startActivity(the_intent);
 
          }
       });
@@ -64,10 +66,17 @@ public class TitleActivity extends AppCompatActivity {
 
    private void createOpenPopupDialog()
    {
-        builder = new AlertDialog.Builder(this);
-        View open_view = getLayoutInflater().inflate(R.layout.open_pop_up, null);
+      // new person obj
+      user = new Person();
 
-      name_field = open_view.findViewById(R.id.name_text);
+
+      builder = new AlertDialog.Builder(this);
+      View open_view = getLayoutInflater().inflate(R.layout.open_pop_up, null);
+
+
+      first_name_field = open_view.findViewById(R.id.first_name);
+      last_name_field = open_view.findViewById(R.id.last_name);
+
       savings_account_field = open_view.findViewById(R.id.savings_answer);
       checking_account_field  = open_view.findViewById(R.id.checking_answer);
 
@@ -83,7 +92,37 @@ public class TitleActivity extends AppCompatActivity {
          public void onClick(View v)
          {
 
-            Toast.makeText(TitleActivity.this, "You fixed it!!!! ", Toast.LENGTH_LONG).show();
+            if((!first_name_field.getText().toString().isEmpty()) && (!last_name_field.getText().toString().isEmpty()) && (!savings_account_field.getText().toString().isEmpty()) && (!checking_account_field.getText().toString().isEmpty()))
+            {
+               String first = first_name_field.getText().toString().trim();
+               String last  = last_name_field.getText().toString().trim();
+
+
+               String savings_response = savings_account_field.getText().toString().trim();
+               String checking_response = checking_account_field.getText().toString().trim();
+
+               user.setFirstName(first);
+               user.setLastName(last);
+
+               if((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y'))
+               {
+                  user.setSavings(true);
+
+               }
+
+               else if((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
+               {
+                  user.setSavings(false);
+
+
+               }
+
+               Toast.makeText(TitleActivity.this, user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_LONG).show();
+            }
+
+            else
+               Toast.makeText(TitleActivity.this, "Missing a field", Toast.LENGTH_LONG).show();
+
 
          }
       });

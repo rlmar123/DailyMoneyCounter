@@ -39,19 +39,19 @@ public class Person
     }
 
     // getter methods
-    public String getFirst_name()
+    public String getFirstName()
        {return first_name;}
 
-    public String getLast_name()
+    public String getLastName()
        {return last_name;}
 
-    public double getChecking_balance()
+    public double getCheckingBalance()
        {return checking_balance;}
 
-    public double getSavings_balance()
+    public double getSavingsBalance()
        {return savings_balance;}
 
-    public int getAccount_number()
+    public int getAccountNumber()
        {return account_number;}
 
     public boolean isChecking()
@@ -61,19 +61,19 @@ public class Person
        {return savings;}
 
    // setter methods
-   public void setFirst_name(String first_name)
+   public void setFirstName(String first_name)
       {this.first_name = first_name;}
 
-   public void setLast_name(String last_name)
+   public void setLastName(String last_name)
       {this.last_name = last_name;}
 
-   public void setChecking_balance(double checking_balance)
+   public void setCheckingBalance(double checking_balance)
       {this.checking_balance = checking_balance;}
 
-   public void setSavings_balance(double savings_balance)
+   public void setSavingsBalance(double savings_balance)
       {this.savings_balance = savings_balance;}
 
-   public void setAccount_number(int account_number)
+   public void setAccountNumber(int account_number)
       {this.account_number = account_number;}
 
    public void setChecking(boolean checking)
