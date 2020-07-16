@@ -37,6 +37,9 @@ public class TitleActivity extends AppCompatActivity {
 
    private Person user = null;
 
+   private String savings_response;
+   private String checking_response;
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -92,41 +95,99 @@ public class TitleActivity extends AppCompatActivity {
          public void onClick(View v)
          {
 
+            // all fields filled
             if((!first_name_field.getText().toString().isEmpty()) && (!last_name_field.getText().toString().isEmpty()) && (!savings_account_field.getText().toString().isEmpty()) && (!checking_account_field.getText().toString().isEmpty()))
             {
+               //convert first and last name to string to insert into user object
                String first = first_name_field.getText().toString().trim();
-               String last  = last_name_field.getText().toString().trim();
+               String last = last_name_field.getText().toString().trim();
 
 
-               String savings_response = savings_account_field.getText().toString().trim();
-               String checking_response = checking_account_field.getText().toString().trim();
+               savings_response = savings_account_field.getText().toString().trim();
+               checking_response = checking_account_field.getText().toString().trim();
 
+               //set object first and last name
                user.setFirstName(first);
                user.setLastName(last);
 
-               if((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y'))
+               if(accountFieldValidator())
                {
-                  user.setSavings(true);
+
+                  // test savings
+                  if ((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y'))
+                     user.setSavings(true);
+                    // Toast.makeText(TitleActivity.this, "savings is Yes checking is yes", Toast.LENGTH_LONG).show();
+
+                  else if ((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
+                     user.setSavings(false);
+                     //Toast.makeText(TitleActivity.this, "savings is Yes savings is yes", Toast.LENGTH_LONG).show();
+
+          //        else
+            //         Toast.makeText(TitleActivity.this, "Answer must be yes or no.... ", Toast.LENGTH_LONG).show();
+
+
+                  // test checking
+                  if ((checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y'))
+                     user.setChecking(true);
+
+                  else if ((checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n'))
+                     user.setChecking(false);
+
+
+           //       else
+             //        Toast.makeText(TitleActivity.this, "Answer must be yes or no.... ", Toast.LENGTH_LONG).show();
 
                }
 
-               else if((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
-               {
-                  user.setSavings(false);
-
-
-               }
-
-               Toast.makeText(TitleActivity.this, user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_LONG).show();
+               // fields for checking and savings are NO GOOD
+               else
+                  Toast.makeText(TitleActivity.this, user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_LONG).show();
             }
 
+
+            // a field is missing
             else
                Toast.makeText(TitleActivity.this, "Missing a field", Toast.LENGTH_LONG).show();
-
 
          }
       });
 
-   }
+   } // end createOpenPopupDialog
+
+
+   private boolean accountFieldValidator()
+   {
+
+      boolean isGood = false;
+
+      if(( (savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y') ) && ( (checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y') )){
+         isGood = true;
+         Toast.makeText(TitleActivity.this, "savings is Yes checking is yes", Toast.LENGTH_LONG).show();
+
+      }
+
+      else if ( ( (savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n') ) && ( (checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y') ) ) {
+         isGood = true;
+         Toast.makeText(TitleActivity.this, "savings is no checking is yes", Toast.LENGTH_LONG).show();
+
+      }
+
+      else if ( ( (savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y') ) && ( (checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n') ) ){
+         isGood = true;
+         Toast.makeText(TitleActivity.this, "savings is Yes checking is no", Toast.LENGTH_LONG).show();
+
+      }
+
+      else if ( ( (savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n') ) && ( (checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n') ) ){
+         isGood = true;
+         Toast.makeText(TitleActivity.this, "savings is no checking is no", Toast.LENGTH_LONG).show();
+
+      }
+
+      return isGood;
+
+   } //end accountFieldValidator
+
+
 
 } // end TitleActivity
