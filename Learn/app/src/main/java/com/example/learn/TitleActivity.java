@@ -64,6 +64,9 @@ public class TitleActivity extends AppCompatActivity {
 
 
 
+
+
+
    } // end onCreate
 
 
@@ -94,10 +97,8 @@ public class TitleActivity extends AppCompatActivity {
          @Override
          public void onClick(View v)
          {
-
             // all fields filled
-            if((!first_name_field.getText().toString().isEmpty()) && (!last_name_field.getText().toString().isEmpty()) && (!savings_account_field.getText().toString().isEmpty()) && (!checking_account_field.getText().toString().isEmpty()))
-            {
+            if((!first_name_field.getText().toString().isEmpty()) && (!last_name_field.getText().toString().isEmpty()) && (!savings_account_field.getText().toString().isEmpty()) && (!checking_account_field.getText().toString().isEmpty())) {
                //convert first and last name to string to insert into user object
                String first = first_name_field.getText().toString().trim();
                String last = last_name_field.getText().toString().trim();
@@ -110,54 +111,92 @@ public class TitleActivity extends AppCompatActivity {
                user.setFirstName(first);
                user.setLastName(last);
 
-               if(accountFieldValidator())
-               {
+               dialogCreator();
 
-                  // test savings
-                  if ((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y'))
-                     user.setSavings(true);
-                    // Toast.makeText(TitleActivity.this, "savings is Yes checking is yes", Toast.LENGTH_LONG).show();
-
-                  else if ((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
-                     user.setSavings(false);
-                     //Toast.makeText(TitleActivity.this, "savings is Yes savings is yes", Toast.LENGTH_LONG).show();
-
-          //        else
-            //         Toast.makeText(TitleActivity.this, "Answer must be yes or no.... ", Toast.LENGTH_LONG).show();
-
-
-                  // test checking
-                  if ((checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y'))
-                     user.setChecking(true);
-
-                  else if ((checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n'))
-                     user.setChecking(false);
-
-
-           //       else
-             //        Toast.makeText(TitleActivity.this, "Answer must be yes or no.... ", Toast.LENGTH_LONG).show();
-
-               }
-
-               // fields for checking and savings are NO GOOD
-               else
-                  Toast.makeText(TitleActivity.this, user.getFirstName() + " " + user.getLastName(), Toast.LENGTH_LONG).show();
             }
-
 
             // a field is missing
             else
                Toast.makeText(TitleActivity.this, "Missing a field", Toast.LENGTH_LONG).show();
 
-         }
+         } // end onClick
       });
 
    } // end createOpenPopupDialog
 
+   // this method chooses which popup to create based on the savings_response and checking_response
+   private void dialogCreator()
+   {
+      if(accountFieldValidator())
+      {
 
+         // test savings_response
+         if ((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y')){
+            user.setSavings(true);
+            createSavingsDialog();
+
+         }
+
+
+         else if ((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
+         {
+            user.setSavings(false);
+            Toast.makeText(TitleActivity.this, "No Savings Account created...", Toast.LENGTH_LONG).show();
+         }
+
+
+
+         // test checking_response
+         if ((checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y'))
+         {
+            user.setChecking(true);
+            createCheckingDialog();
+         }
+
+         else if ((checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n'))
+         {
+            user.setChecking(false);
+            Toast.makeText(TitleActivity.this, "No Checking Account created...", Toast.LENGTH_LONG).show();
+         }
+      }
+
+      // fields for checking and savings are NO GOOD
+      else
+         Toast.makeText(TitleActivity.this, "Please enter Yes or No for Checking or Savings...", Toast.LENGTH_LONG).show();
+   }
+
+   private void createCheckingDialog()
+   {
+      builder = new AlertDialog.Builder(this);
+      View checking_view = getLayoutInflater().inflate(R.layout.checking_pop_up, null);
+
+
+
+
+      builder.setView(checking_view);
+      dialog = builder.create();// creating our dialog object
+      dialog.show();// important step!
+
+   } // end createCheckingDialog
+
+   private void createSavingsDialog()
+   {
+      builder = new AlertDialog.Builder(this);
+      View savings_view = getLayoutInflater().inflate(R.layout.savings_pop_up, null);
+
+
+
+
+      builder.setView(savings_view);
+      dialog = builder.create();// creating our dialog object
+      dialog.show();// important step!
+
+   } // end createSavingsDialog
+
+
+   // this method tests to make sure that the user entered Yes or No
    private boolean accountFieldValidator()
    {
-
       boolean isGood = false;
 
       if(( (savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y') ) && ( (checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y') )){
@@ -166,7 +205,8 @@ public class TitleActivity extends AppCompatActivity {
 
       }
 
-      else if ( ( (savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n') ) && ( (checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y') ) ) {
+      else if ( ( (savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n') ) && ( (checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y') ) )
+      {
          isGood = true;
          Toast.makeText(TitleActivity.this, "savings is no checking is yes", Toast.LENGTH_LONG).show();
 
