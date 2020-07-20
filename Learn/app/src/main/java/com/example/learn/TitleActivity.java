@@ -1,6 +1,8 @@
 package com.example.learn;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -40,12 +42,22 @@ public class TitleActivity extends AppCompatActivity {
    private String savings_response;
    private String checking_response;
 
+   private static final String MESSAGE_ID = "person_prefs";
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_title);
 
+      SharedPreferences sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
+      if(sharedPreferences.getString("thomas","test")!= null)
+      {
+         createOpenPopupDialog();
+      }
+
+// WE GET SHARED PREF
+      // WE TESR IT
       test_button = findViewById(R.id.test_button);
 
 
