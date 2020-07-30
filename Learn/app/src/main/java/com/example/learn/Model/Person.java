@@ -1,8 +1,9 @@
 package com.example.learn.Model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Person
+public class Person implements Serializable
 {
  //   private static int person_count = 0;
     Random acct_num_generator = null;
@@ -54,10 +55,10 @@ public class Person
     public int getAccountNumber()
        {return account_number;}
 
-    public boolean isChecking()
+    public boolean hasChecking()
        {return checking;}
 
-    public boolean isSavings()
+    public boolean hasSavings()
        {return savings;}
 
    // setter methods

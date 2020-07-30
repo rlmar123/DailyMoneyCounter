@@ -17,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary"
+            android:background="@drawable/gradient_bg"
             android:padding="24dp">
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
                 android:hint="Enter Your First Name : "
-                android:textColorHint="#000000"/>
+                android:textColorHint="#FF0000"/>
 
             <EditText
                 android:id="@+id/last_name"
@@ -45,14 +45,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/first_name"
                 android:hint="Enter Your Last Name : "
-                android:textColorHint="#000000"/>
+                android:textColorHint="#FF0000"/>
 
             <EditText
                 android:id="@+id/savings_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/last_name"
-                android:hint="Do you have a Savings Account (Y/N) : "
+                android:inputType="numberDecimal"
+                android:hint="Enter Opening Savings Balance : $"
                 android:textColorHint="#FF0000"/>
 
             <EditText
@@ -60,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/savings_answer"
-                android:hint="Do you have a Checking Account (Y/N) : "
+                android:inputType="numberDecimal"
+                android:hint="Enter Opening Checking Balance : $"
                 android:textColorHint="#FF0000"/>
 
             <Button

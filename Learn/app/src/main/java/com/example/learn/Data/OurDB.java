@@ -131,8 +131,12 @@ public class OurDB extends SQLiteOpenHelper
 
 
 
-
-
+   public void clearDatabase()
+   {
+      String clearDBQuery = "DELETE FROM " + UtilVar.TABLE_NAME;
+      SQLiteDatabase db = this.getReadableDatabase();
+      db.execSQL(clearDBQuery);
+   }
 
 
 

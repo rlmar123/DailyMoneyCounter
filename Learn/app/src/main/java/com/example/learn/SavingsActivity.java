@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.learn.Data.OurDB;
+import com.example.learn.Model.Person;
 import com.example.learn.Model.ProtoTransactionData;
 import com.example.learn.Model.TransactionData;
 import com.example.learn.Model.TransactionDataViewModel;
@@ -67,6 +68,9 @@ public class SavingsActivity extends AppCompatActivity
     //  Toolbar toolbar = findViewById(R.id.toolbar);
     //  setSupportActionBar(toolbar);
 
+      Intent i = getIntent();
+      Person dene = (Person) i.getSerializableExtra("the_user");
+
       the_db = new OurDB(this);
 
       our_item_list = new ArrayList<ProtoTransactionData>();
@@ -78,20 +82,12 @@ public class SavingsActivity extends AppCompatActivity
       ProtoTransactionData next_new_transaction = new ProtoTransactionData("NEW_TEST_DEPOSIT", "NEW_TEST_ACCT", 0, 1000,1000.00);
       ProtoTransactionData txt_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,1000.00);
 
-
+      //the_db.clearDatabase();
       our_item_list = the_db.getAllTransactions();
 
-      Log.d("ProtoTransactionData_1", "Size " + our_item_list.size());
+      Log.d("ProtoTransactionData_1", "Size " + the_db.getCount());
 
-      for(ProtoTransactionData temp : our_item_list)
-      {
-         Log.d("ProtoTransactionData_2", "class works!!!! " + temp.getAmount());
-      }
 
-      for (int i = 0; i < our_item_list.size(); i++)
-      {
-         Log.d("ProtoTransactionData_TEST", "numbers " + our_item_list.get(i).getAmount());
-      }
 
 //     our_item_list.add(new_transaction);
   //   our_item_list.add(next_new_transaction);
