@@ -17,6 +17,7 @@ import com.example.learn.Data.OurDB;
 import com.example.learn.Model.Person;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Random;
 
 
 public class TitleActivity extends AppCompatActivity {
@@ -48,6 +49,8 @@ public class TitleActivity extends AppCompatActivity {
    private OurDB title_db = null;
 
    private int num = 0;
+
+   private Random acct_num_generator = null;
    private static final String MESSAGE_ID = "person_prefs";
    private SharedPreferences sharedPreferences= null;;
 
@@ -58,10 +61,7 @@ public class TitleActivity extends AppCompatActivity {
       setContentView(R.layout.activity_title);
 
 
-      sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-
       title_db = new OurDB(this);
-
 
       start_button = findViewById(R.id.start_button);
 
@@ -110,8 +110,8 @@ public class TitleActivity extends AppCompatActivity {
             // all fields filled
             if ( (!first_name_field.getText().toString().isEmpty()) && (!last_name_field.getText().toString().isEmpty()) && (!savings_account_field.getText().toString().isEmpty()) && (!checking_account_field.getText().toString().isEmpty()) )
             {
-               getData(v);
                dialog.dismiss();
+               getData(v);
             }
 
             // a field is missing
@@ -119,7 +119,6 @@ public class TitleActivity extends AppCompatActivity {
                Toast.makeText(TitleActivity.this, "Missing a field", Toast.LENGTH_LONG).show();
 
          //  Toast.makeText(TitleActivity.this, "first name " + user.getFirstName(), Toast.LENGTH_LONG).show();
-
 
          } // end onClick
 
@@ -131,7 +130,7 @@ public class TitleActivity extends AppCompatActivity {
 
    } // end createOpenPopupDialog
 
-   /*
+   /* MAY NOT NEED THIS BLOCK
    // this method chooses which popup to create based on the savings_response and checking_response
    private void dialogCreator()
    {
@@ -164,7 +163,7 @@ public class TitleActivity extends AppCompatActivity {
          Toast.makeText(TitleActivity.this, "No Checking Account created...", Toast.LENGTH_LONG).show();
       }
 
-   } // end dialogCreator */
+   } // end dialogCreator
 
 
    private void createCheckingDialog()
@@ -225,11 +224,12 @@ public class TitleActivity extends AppCompatActivity {
       }
 
       return isGood;
-   } //end accountFieldValidator
+   } //end accountFieldValidator         end BLOCK*/
 
 
    private void getData(View v)
    {
+
       //convert first and last name to string to insert into user object
       String first = first_name_field.getText().toString().trim();
       String last = last_name_field.getText().toString().trim();
@@ -245,20 +245,21 @@ public class TitleActivity extends AppCompatActivity {
 
       double min = 5.00;
 
+      //test checking_bslance
       if(checking_balance > min)
       {
            user.setChecking(true);
            user.setCheckingBalance(checking_balance);
       }
 
-      else if(checking_balance == min)
+      else if(checking_balance <= min)
       {
          user.setChecking(false);
          user.setCheckingBalance(0.00);
       }
 
 
-
+      //test savings_balance
       if(savings_balance > min)
       {
          user.setSavings(true);
@@ -266,16 +267,46 @@ public class TitleActivity extends AppCompatActivity {
 
       }
 
-      else if(savings_balance == min)
+      else if(savings_balance <= min)
       {
          user.setSavings(false);
          user.setSavingsBalance(0.00);
       }
 
-      Log.d("ProtoTransactionData_1", "user has checking :  " + user.hasChecking());
-      Log.d("ProtoTransactionData_1", "user checking balance :  " + user.getCheckingBalance());
-      Log.d("ProtoTransactionData_1", "user has savings :  "+ user.hasSavings());
-      Log.d("ProtoTransactionData_1", "user checking balance :   " + user.getSavingsBalance());
+      /*
+
+      Log.d("ProtoTransactionData_1", "user has checking :  " + user.hasChecking());*/
+
+      // store user data in shared prefs
+      sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+
+
+      editor.putString("f_name", user.getFirstName());
+      editor.putString("l_name", user.getLastName());
+
+      editor.putFloat("chrck_bal", (float) user.getCheckingBalance());
+      editor.putFloat("save_bal", (float)user.getSavingsBalance());
+
+      editor.putInt("acct_num", user.getAccountNumber());
+
+      editor.putBoolean("has_savings", user.hasSavings());
+      editor.putBoolean("has_checking", user.hasChecking());
+
+      editor.apply();
+
+
+      // store user data in shared prefs
+      sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+      Log.d("ProtoTransactionData_1", "SPREFS fname :  " + sharedPreferences.getString("f_name", "null"));
+      Log.d("ProtoTransactionData_1", "SPREFS lname :  " + sharedPreferences.getString("l_name", "null"));
+
+      Log.d("ProtoTransactionData_1", "SPREFS checking balance :  " + sharedPreferences.getFloat("check_bal", -1));
+      Log.d("ProtoTransactionData_1", "SPREFS savings balance  :  " + sharedPreferences.getFloat("save_bal", -1));
+
 
       Intent nextIntent = new Intent(TitleActivity.this, SavingsActivity.class);
       nextIntent.putExtra("the_user", user);
@@ -289,15 +320,14 @@ public class TitleActivity extends AppCompatActivity {
    {
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-      if( title_db.getCount() > 0)
+      if(sharedPreferences.getString("f_name", null) != null)
       {
          Intent myByPassIntent = new Intent(TitleActivity.this, SavingsActivity.class);
          startActivity(myByPassIntent);
-         Log.d("ProtoTransactionData_1", "my_title" + title_db.getCount());
+         Log.d("ProtoTransactionData_1", "my_by_pass " + sharedPreferences.getString("f_name", null));
          finish();
       }
 
    }
-
 
 } // end TitleActivity

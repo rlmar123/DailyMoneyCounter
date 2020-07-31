@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Person implements Serializable
 {
- //   private static int person_count = 0;
+
     Random acct_num_generator = null;
 
     private String first_name = null;
