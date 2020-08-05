@@ -2,6 +2,7 @@ package com.example.learn;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.learn.Data.OurDB;
@@ -59,34 +60,41 @@ public class SavingsActivity extends AppCompatActivity
    private Button confirm_button_savings = null;
    private Button cancel_button_savings = null;
 
+   private Person the_user;
 
+   private static final String MESSAGE_ID = "person_prefs";
+   private SharedPreferences sharedPreferences = null;;
 
    @Override
-   protected void onCreate(Bundle savedInstanceState) {
+   protected void onCreate(Bundle savedInstanceState)
+   {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_savings);
     //  Toolbar toolbar = findViewById(R.id.toolbar);
     //  setSupportActionBar(toolbar);
 
       Intent i = getIntent();
-      Person dene = (Person) i.getSerializableExtra("the_user");
+      the_user = (Person) i.getSerializableExtra("the_user");
+
+      sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+
+      Log.d("ProtoTransactionData_1", "F_name " + sharedPreferences.getString("f_name", null));
+      Log.d("ProtoTransactionData_1", "l_name " + sharedPreferences.getString("l_name", null));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getInt("acct_num", -1));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getFloat("chrck_bal", -1));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getFloat("save_bal", -1));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_savings", false));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
+      the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
 //      our_item_list = the_db.getAllTransactions();
 
 
-
-      ProtoTransactionData new_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,1000.00);
-      ProtoTransactionData next_new_transaction = new ProtoTransactionData("NEW_TEST_DEPOSIT", "NEW_TEST_ACCT", 0, 1000,1000.00);
-      ProtoTransactionData txt_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,1000.00);
-
       //the_db.clearDatabase();
       our_item_list = the_db.getAllTransactions();
-
-      Log.d("ProtoTransactionData_1", "Size " + the_db.getCount());
-
 
 
 //     our_item_list.add(new_transaction);
@@ -148,16 +156,10 @@ public class SavingsActivity extends AppCompatActivity
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
       // we will use person savings bal here!!!!
-      balance_text_savings.setText("8 million");
+      balance_text_savings.setText("Balance : " +
+              "" + Double.toString(the_user.getCheckingBalance()));
       deposit_text_savings.setText("2 billion");
       sum_text_savings.setText("10 Trillion");
-
-/*
-      for(String temp : our_item_list)
-      {
-         Log.d("list view!!! ", "adding " + temp);
-      } */
-
 
 
       builder.setView(view);
@@ -213,14 +215,6 @@ public class SavingsActivity extends AppCompatActivity
       withdraw_text_savings.setText("----2 billion");
       diff_text_savings.setText("2310 Trillion");
 
-      /*
-      for(TransactionData temp : our_item_list)
-      {
-         Log.d("list view!!! ", "subtract " + temp);
-      } */
-
-
-
       builder.setView(view);
       dialog = builder.create();// creating our dialog object
       dialog.show();// important step!
@@ -247,8 +241,6 @@ public class SavingsActivity extends AppCompatActivity
    {
       final String DEPOSIT = "Deposit";
 
-      test_val += 523.75;
-
       ProtoTransactionData test_new_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,test_val);
     //  ProtoTransactionData test_next_new_transaction = new ProtoTransactionData(2,"NEW_TEST_DEPOSIT", "NEW_TEST_ACCT", 0, 1000,1000.00);
 
@@ -263,8 +255,31 @@ public class SavingsActivity extends AppCompatActivity
          @Override
          public void run()
          {
+            Person tempPerson = new Person();
+
+            sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+
+
+            /*
+               We need to create a tempPerson objrct to send with the intent. This is
+               why the activity is crashing I believe. The activity never receives an intent
+               on line 745 and 75...
+
+
+             */
+
+            tempPerson = new Person();
+
+            tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
+            tempPerson.setLastName(sharedPreferences.getString("l_name", null));
+            tempPerson.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
+
+
             Intent myIntent = new Intent(SavingsActivity.this, SavingsActivity.class);
+            myIntent.putExtra("the_user", tempPerson);
             dialog.dismiss();
+
+
 
             startActivity(myIntent);
 

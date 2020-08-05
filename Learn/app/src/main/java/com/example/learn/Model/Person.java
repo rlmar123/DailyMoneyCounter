@@ -25,18 +25,16 @@ public class Person implements Serializable
 
     public Person(String fName, String lName, double checking_bal, double savings_bal, int account_num, boolean save, boolean check)
     {
-        first_name = fName;
-        last_name = lName;
+       first_name = fName;
+       last_name = lName;
 
-        checking_balance = checking_bal;
-        savings_balance = savings_bal;
+       checking_balance = checking_bal;
+       savings_balance = savings_bal;
 
-        account_number = account_num;
+       account_number = account_num;
 
-        savings = save;
-        checking = check;
-
-    //    person_count++;
+       savings = save;
+       checking = check;
     }
 
     // getter methods
