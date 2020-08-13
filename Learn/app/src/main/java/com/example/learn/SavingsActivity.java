@@ -3,6 +3,7 @@ package com.example.learn;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
 
 import com.example.learn.Data.OurDB;
@@ -80,8 +81,8 @@ public class SavingsActivity extends AppCompatActivity
 
       Log.d("ProtoTransactionData_1", "F_name " + sharedPreferences.getString("f_name", null));
       Log.d("ProtoTransactionData_1", "l_name " + sharedPreferences.getString("l_name", null));
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getInt("acct_num", -1));
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getFloat("chrck_bal", -1));
+      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getInt("acct_num", 1));
+      Log.d("ProtoTransactionData_1", "From title activity " + the_user.getCheckingBalance());
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getFloat("save_bal", -1));
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_savings", false));
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
@@ -116,7 +117,7 @@ public class SavingsActivity extends AppCompatActivity
       //keeps data up to date
       test_adapter.notifyDataSetChanged();
 
-      // FABSS
+      // FABS
       FloatingActionButton leftFab = findViewById(R.id.left_fab);
       leftFab.setOnClickListener(new View.OnClickListener() {
          @Override
@@ -147,6 +148,9 @@ public class SavingsActivity extends AppCompatActivity
       builder = new AlertDialog.Builder(this);
       View view = getLayoutInflater().inflate(R.layout.add_pop_up, null);
 
+      // to format into dollar format
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
       // make connection to add_pop_up.xml widgets
       balance_text_savings = view.findViewById(R.id.balance_text);
       deposit_text_savings = view.findViewById(R.id.deposit_text);
@@ -156,16 +160,11 @@ public class SavingsActivity extends AppCompatActivity
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
       // we will use person savings bal here!!!!
-      balance_text_savings.setText("Balance : " +
-              "" + Double.toString(the_user.getCheckingBalance()));
-      deposit_text_savings.setText("2 billion");
-      sum_text_savings.setText("10 Trillion");
-
+      balance_text_savings.setText("Balance : " + "" + formatter.format(the_user.getCheckingBalance()));
 
       builder.setView(view);
       dialog = builder.create();// creating our dialog object
       dialog.show();// important step!
-
 
       confirm_button_savings.setOnClickListener(new View.OnClickListener()
       {
@@ -173,7 +172,11 @@ public class SavingsActivity extends AppCompatActivity
          public void onClick(View v)
          {
           //  Toast.makeText(SavingsActivity.this, "CLICK CLICK CLICK", Toast.LENGTH_LONG).show();
-           deposit();
+            if(!(deposit_text_savings.getText().toString().isEmpty()))
+               deposit();
+
+            else
+               Toast.makeText(SavingsActivity.this, "Deposit is blank...", Toast.LENGTH_LONG).show();
          }
       });
 
@@ -203,6 +206,9 @@ public class SavingsActivity extends AppCompatActivity
       builder = new AlertDialog.Builder(this);
       View view = getLayoutInflater().inflate(R.layout.subtract_pop_up, null);
 
+      // to format into dollar format
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
       withdrawBal_text_savings = view.findViewById(R.id.withdraw_balance_text);
       withdraw_text_savings = view.findViewById(R.id.withdraw_text);
       diff_text_savings = view.findViewById(R.id.difference_text);
@@ -211,9 +217,7 @@ public class SavingsActivity extends AppCompatActivity
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
 
-      withdrawBal_text_savings.setText("100 million");
-      withdraw_text_savings.setText("----2 billion");
-      diff_text_savings.setText("2310 Trillion");
+      withdrawBal_text_savings.setText("Balance : " + "" + formatter.format(the_user.getCheckingBalance()));
 
       builder.setView(view);
       dialog = builder.create();// creating our dialog object
@@ -224,7 +228,14 @@ public class SavingsActivity extends AppCompatActivity
          @Override
          public void onClick(View v)
          {
-            Toast.makeText(SavingsActivity.this, "RING RING RING", Toast.LENGTH_LONG).show();
+            if(!(withdraw_text_savings.getText().toString().isEmpty()))
+            {
+               Toast.makeText(SavingsActivity.this, "Withdraw is good...", Toast.LENGTH_LONG).show();
+               withdraw();
+            }
+
+            else
+               Toast.makeText(SavingsActivity.this, "Withdraw is blank...", Toast.LENGTH_LONG).show();
          }
       });
 
@@ -239,16 +250,25 @@ public class SavingsActivity extends AppCompatActivity
 
    private void deposit()
    {
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
       final String DEPOSIT = "Deposit";
+
+      String the_amount = deposit_text_savings.getText().toString().trim();
+
+      double open = the_user.getCheckingBalance();
+      double amount = Double.parseDouble(the_amount);
+      final double closing = open + amount;
+
+      sum_text_savings.setText(formatter.format(closing));
 
       ProtoTransactionData test_new_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,test_val);
     //  ProtoTransactionData test_next_new_transaction = new ProtoTransactionData(2,"NEW_TEST_DEPOSIT", "NEW_TEST_ACCT", 0, 1000,1000.00);
 
-      //test data
- //     our_item_list.add(test_new_transaction);
-        the_db.addTransaction(test_new_transaction);
 
+   //   the_db.addTransaction(test_new_transaction);
 
+      // this restarts the activity
       new Handler().postDelayed(new Runnable()
       {
 
@@ -259,21 +279,15 @@ public class SavingsActivity extends AppCompatActivity
 
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-
-            /*
-               We need to create a tempPerson objrct to send with the intent. This is
-               why the activity is crashing I believe. The activity never receives an intent
-               on line 745 and 75...
-
-
-             */
-
             tempPerson = new Person();
 
             tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
             tempPerson.setLastName(sharedPreferences.getString("l_name", null));
-            tempPerson.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
-
+            tempPerson.setSavings(sharedPreferences.getBoolean("has_savings", false));
+            tempPerson.setChecking(sharedPreferences.getBoolean("has_checking", false));
+            tempPerson.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
+            tempPerson.setCheckingBalance(closing);  //
+            tempPerson.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));  //
 
             Intent myIntent = new Intent(SavingsActivity.this, SavingsActivity.class);
             myIntent.putExtra("the_user", tempPerson);
@@ -291,6 +305,46 @@ public class SavingsActivity extends AppCompatActivity
       }, 1500);
 
 
+   } // end deposit
+
+   private void withdraw()
+   {
+      // this restarts the activity
+      new Handler().postDelayed(new Runnable()
+      {
+
+         @Override
+         public void run()
+         {
+            Person tempPerson = new Person();
+
+            sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+
+            tempPerson = new Person();
+
+            tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
+            tempPerson.setLastName(sharedPreferences.getString("l_name", null));
+            tempPerson.setSavings(sharedPreferences.getBoolean("has_savings", false));
+            tempPerson.setChecking(sharedPreferences.getBoolean("has_checking", false));
+            tempPerson.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
+            tempPerson.setCheckingBalance(11111.11);  //
+            tempPerson.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
+
+            Intent myIntent = new Intent(SavingsActivity.this, SavingsActivity.class);
+
+            myIntent.putExtra("the_user", tempPerson);
+            dialog.dismiss();
+
+
+
+            startActivity(myIntent);
+
+            Toast.makeText(SavingsActivity.this, "TWO obj created", Toast.LENGTH_LONG).show();
+            //kills previous activity
+            finish();
+
+         }
+      }, 1500);
    }
 
 }

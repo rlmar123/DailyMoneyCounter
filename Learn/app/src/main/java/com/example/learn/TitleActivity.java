@@ -265,16 +265,19 @@ public class TitleActivity extends AppCompatActivity
       // WE need to pass person object
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-      if(sharedPreferences.getString("f_name", null) == null)
+      if(sharedPreferences.getString("f_name", null) != null)
       {
          // new person obj
          user = new Person();
 
          user.setFirstName(sharedPreferences.getString("f_name", null));
          user.setLastName(sharedPreferences.getString("l_name", null));
-
+         user.setSavings(sharedPreferences.getBoolean("has_savings", false));
+         user.setChecking(sharedPreferences.getBoolean("has_checking", false));
+         user.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
          user.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
          user.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
+
 /////we ned to set acct num
          Intent myByPassIntent = new Intent(TitleActivity.this, SavingsActivity.class);
          myByPassIntent.putExtra("the_user", user);
