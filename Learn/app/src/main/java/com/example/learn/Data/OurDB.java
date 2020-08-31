@@ -96,7 +96,7 @@ public class OurDB extends SQLiteOpenHelper
                       UtilVar.CLOSE_BAANCE,
                       UtilVar.TRANS_AMOUNT},
               null, null, null, null,
-              UtilVar.TRANS_AMOUNT + " DESC");
+              UtilVar.TRANSACTION_ID + " ASC");
 
       //Loop through our data
       if(cursor.moveToFirst())

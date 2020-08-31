@@ -2,6 +2,7 @@ package com.example.learn.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.icu.text.NumberFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,15 +51,19 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       return new TestRecycleView.ViewHolder(test_view, the_context);
    }
 
+   //this is how the list populates as you scroll on and off the screen
    @Override
    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
    {
+      // to format into dollar format
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
       ProtoTransactionData some_item = test_item_list.get(position);
 
-      holder.open_bal.setText("Opening Balance : " + some_item.getOpenBal());
-      holder.closing_bal.setText("Closing Balance : " + some_item.getClosingBal());
-      holder.amount.setText("Amount : " + some_item.getAmount());
-      holder.date.setText("01/06/1980");
+      holder.open_bal.setText("Opening Balance : " + formatter.format(some_item.getOpenBal()));
+      holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
+      holder.amount.setText("Amount : " + formatter.format(some_item.getAmount()));
+      holder.date.setText("01/01/1900");
 
 
    }

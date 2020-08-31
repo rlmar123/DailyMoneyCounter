@@ -56,8 +56,10 @@ public class TitleActivity extends AppCompatActivity
       setContentView(R.layout.activity_title);
 
       title_db = new OurDB(this);
- //     sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-   //   sharedPreferences.edit().clear().commit();
+
+      //clears out shared prefs
+    //  sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+    // sharedPreferences.edit().clear().commit();
 
       start_button = findViewById(R.id.start_button);
 
@@ -118,42 +120,8 @@ public class TitleActivity extends AppCompatActivity
 
    } // end createOpenPopupDialog
 
-   /* MAY NOT NEED THIS BLOCK
-   // this method chooses which popup to create based on the savings_response and checking_response
-   private void dialogCreator()
-   {
-      // test savings_response
-      if ((savings_response.charAt(0) == 'Y') || (savings_response.charAt(0) == 'y'))
-      {
-         user.setSavings(true);
-         createSavingsDialog();
 
-      }
-
-      else if ((savings_response.charAt(0) == 'N') || (savings_response.charAt(0) == 'n'))
-
-      {
-         user.setSavings(false);
-         Toast.makeText(TitleActivity.this, "No Savings Account created...", Toast.LENGTH_LONG).show();
-      }
-
-
-      // test checking_response
-      if ((checking_response.charAt(0) == 'Y') || (checking_response.charAt(0) == 'y'))
-      {
-         user.setChecking(true);
-         createCheckingDialog();
-      }
-
-      else if ((checking_response.charAt(0) == 'N') || (checking_response.charAt(0) == 'n'))
-      {
-         user.setChecking(false);
-         Toast.makeText(TitleActivity.this, "No Checking Account created...", Toast.LENGTH_LONG).show();
-      }
-
-   } // end dialogCreator
-
-
+/*
    private void createCheckingDialog()
    {
       builder = new AlertDialog.Builder(this);
@@ -174,12 +142,12 @@ public class TitleActivity extends AppCompatActivity
       dialog = builder.create();// creating our dialog object
       dialog.show();// important step!
 
-   } // end createSavingsDialog */
+   } // end createSavingsDialog  */
 
 
    private void getData(View v)
    {
-      createAperson();
+      createPerson();
 
       // store user data in shared prefs
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
@@ -210,7 +178,7 @@ public class TitleActivity extends AppCompatActivity
    } // end getData
 
 
-   private void createAperson()
+   private void createPerson()
    {
       //convert first and last name to string to insert into user object
       String first = first_name_field.getText().toString().trim();
@@ -248,7 +216,6 @@ public class TitleActivity extends AppCompatActivity
       {
          user.setSavings(true);
          user.setSavingsBalance(savings_balance);
-
       }
 
       else if(savings_balance <= min)
@@ -278,7 +245,6 @@ public class TitleActivity extends AppCompatActivity
          user.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
          user.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
 
-/////we ned to set acct num
          Intent myByPassIntent = new Intent(TitleActivity.this, SavingsActivity.class);
          myByPassIntent.putExtra("the_user", user);
 

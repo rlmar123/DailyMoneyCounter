@@ -35,13 +35,13 @@ import java.util.List;
 public class SavingsActivity extends AppCompatActivity
 {
    private double test_val = 675.98;
+
    private AlertDialog.Builder builder;
    private AlertDialog dialog;
 
    //activity_savings.xml widget variables
    private RecyclerView recycler_view = null;
    private TestRecycleView test_adapter= null;
-
 
    private List<ProtoTransactionData> our_item_list = null;
    private OurDB the_db = null;
@@ -88,27 +88,19 @@ public class SavingsActivity extends AppCompatActivity
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
-      the_db.clearDatabase();
+     // the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
-//      our_item_list = the_db.getAllTransactions();
+      our_item_list = the_db.getAllTransactions();
 
 
       //the_db.clearDatabase();
       our_item_list = the_db.getAllTransactions();
 
-
-//     our_item_list.add(new_transaction);
-  //   our_item_list.add(next_new_transaction);
-
- //     our_item_list.add(txt_transaction);
-
-
       //connect to activity_main.xml widget
       recycler_view = findViewById(R.id.recycler);
       recycler_view.setHasFixedSize(true);
       recycler_view.setLayoutManager(new LinearLayoutManager(this));
-
 
       //setup recycler_adapter
       test_adapter = new TestRecycleView(this, our_item_list);
@@ -186,18 +178,6 @@ public class SavingsActivity extends AppCompatActivity
             dialog.dismiss();
          }
       });
-
-/* here we we get the data from the add pop up widgets
-*  after we make connection to widgets, we can extract the data and
-* create the object
-*
-*
-*
-* */
-
-
-
-
    }
 
    private void createSubtractPopupDialog()
@@ -256,17 +236,11 @@ public class SavingsActivity extends AppCompatActivity
 
       String the_amount = deposit_text_savings.getText().toString().trim();
 
-      double open = the_user.getCheckingBalance();
-      double amount = Double.parseDouble(the_amount);
+      final double open = the_user.getCheckingBalance();
+     final double amount = Double.parseDouble(the_amount);
       final double closing = open + amount;
 
       sum_text_savings.setText(formatter.format(closing));
-
-      ProtoTransactionData test_new_transaction = new ProtoTransactionData("TEST_DEPOSIT", "TEST_ACCT", 0, 1000,test_val);
-    //  ProtoTransactionData test_next_new_transaction = new ProtoTransactionData(2,"NEW_TEST_DEPOSIT", "NEW_TEST_ACCT", 0, 1000,1000.00);
-
-
-   //   the_db.addTransaction(test_new_transaction);
 
       // this restarts the activity
       new Handler().postDelayed(new Runnable()
@@ -280,19 +254,32 @@ public class SavingsActivity extends AppCompatActivity
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
             tempPerson = new Person();
+            ProtoTransactionData test_new_transaction = new ProtoTransactionData();
 
             tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
             tempPerson.setLastName(sharedPreferences.getString("l_name", null));
             tempPerson.setSavings(sharedPreferences.getBoolean("has_savings", false));
             tempPerson.setChecking(sharedPreferences.getBoolean("has_checking", false));
             tempPerson.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
-            tempPerson.setCheckingBalance(closing);  //
+            tempPerson.setCheckingBalance(closing);
             tempPerson.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));  //
 
             Intent myIntent = new Intent(SavingsActivity.this, SavingsActivity.class);
             myIntent.putExtra("the_user", tempPerson);
             dialog.dismiss();
 
+            test_new_transaction.setTransType(DEPOSIT);
+            test_new_transaction.setAcctType("Checking");
+            test_new_transaction.setAmount(amount);
+            test_new_transaction.setOpenBalance(open);
+            test_new_transaction.setClosingBalance(closing);
+
+            the_db.addTransaction(test_new_transaction);
+
+            // to ensure balance is current when user turns off the app
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putFloat("chrck_bal", (float) tempPerson.getCheckingBalance());
+            editor.apply();
 
 
             startActivity(myIntent);
@@ -309,6 +296,17 @@ public class SavingsActivity extends AppCompatActivity
 
    private void withdraw()
    {
+      NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
+      final String DEPOSIT = "Withdraw";
+      String the_amount = withdraw_text_savings.getText().toString().trim();
+
+      double open = the_user.getCheckingBalance();
+      double amount = Double.parseDouble(the_amount);
+      final double closing = open - amount;
+
+      diff_text_savings.setText(formatter.format(closing));
+
       // this restarts the activity
       new Handler().postDelayed(new Runnable()
       {
@@ -345,7 +343,7 @@ public class SavingsActivity extends AppCompatActivity
 
          }
       }, 1500);
-   }
+   } // end withdraw
 
 }
 
