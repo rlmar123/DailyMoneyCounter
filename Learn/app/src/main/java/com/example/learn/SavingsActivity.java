@@ -34,8 +34,6 @@ import java.util.List;
 
 public class SavingsActivity extends AppCompatActivity
 {
-   private double test_val = 675.98;
-
    private AlertDialog.Builder builder;
    private AlertDialog dialog;
 
@@ -51,12 +49,10 @@ public class SavingsActivity extends AppCompatActivity
    private EditText deposit_text_savings = null;
    private TextView sum_text_savings = null;
 
-
    // subtract_pop_up.xml widgets
    private TextView withdrawBal_text_savings = null;
    private EditText withdraw_text_savings = null;
    private TextView diff_text_savings = null;
-
 
    private Button confirm_button_savings = null;
    private Button cancel_button_savings = null;
@@ -88,13 +84,9 @@ public class SavingsActivity extends AppCompatActivity
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
-     // the_db.clearDatabase();
+      //the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
-      our_item_list = the_db.getAllTransactions();
-
-
-      //the_db.clearDatabase();
       our_item_list = the_db.getAllTransactions();
 
       //connect to activity_main.xml widget
@@ -128,10 +120,6 @@ public class SavingsActivity extends AppCompatActivity
 
          }
       });
-
-
-
-
 
    } // end onCreate
 
@@ -196,7 +184,6 @@ public class SavingsActivity extends AppCompatActivity
       confirm_button_savings = view.findViewById(R.id.add_confirm_button);
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
-
       withdrawBal_text_savings.setText("Balance : " + "" + formatter.format(the_user.getCheckingBalance()));
 
       builder.setView(view);
@@ -237,7 +224,7 @@ public class SavingsActivity extends AppCompatActivity
       String the_amount = deposit_text_savings.getText().toString().trim();
 
       final double open = the_user.getCheckingBalance();
-     final double amount = Double.parseDouble(the_amount);
+      final double amount = Double.parseDouble(the_amount);
       final double closing = open + amount;
 
       sum_text_savings.setText(formatter.format(closing));
@@ -253,8 +240,7 @@ public class SavingsActivity extends AppCompatActivity
 
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-            tempPerson = new Person();
-            ProtoTransactionData test_new_transaction = new ProtoTransactionData();
+            ProtoTransactionData deposit_transaction = new ProtoTransactionData();
 
             tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
             tempPerson.setLastName(sharedPreferences.getString("l_name", null));
@@ -268,29 +254,27 @@ public class SavingsActivity extends AppCompatActivity
             myIntent.putExtra("the_user", tempPerson);
             dialog.dismiss();
 
-            test_new_transaction.setTransType(DEPOSIT);
-            test_new_transaction.setAcctType("Checking");
-            test_new_transaction.setAmount(amount);
-            test_new_transaction.setOpenBalance(open);
-            test_new_transaction.setClosingBalance(closing);
+            // setup the transaction for DB storage
+            deposit_transaction.setTransType(DEPOSIT);
+            deposit_transaction.setAcctType("Checking");
+            deposit_transaction.setAmount(amount);
+            deposit_transaction.setOpenBalance(open);
+            deposit_transaction.setClosingBalance(closing);
 
-            the_db.addTransaction(test_new_transaction);
+            the_db.addTransaction(deposit_transaction);
 
             // to ensure balance is current when user turns off the app
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putFloat("chrck_bal", (float) tempPerson.getCheckingBalance());
             editor.apply();
 
-
             startActivity(myIntent);
 
-            Toast.makeText(SavingsActivity.this, "TWO obj created", Toast.LENGTH_LONG).show();
             //kills previous activity
             finish();
 
          }
       }, 1500);
-
 
    } // end deposit
 
@@ -298,11 +282,11 @@ public class SavingsActivity extends AppCompatActivity
    {
       NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-      final String DEPOSIT = "Withdraw";
+      final String WITHDRAW = "Withdraw";
       String the_amount = withdraw_text_savings.getText().toString().trim();
 
-      double open = the_user.getCheckingBalance();
-      double amount = Double.parseDouble(the_amount);
+      final double open = the_user.getCheckingBalance();
+      final double amount = Double.parseDouble(the_amount);
       final double closing = open - amount;
 
       diff_text_savings.setText(formatter.format(closing));
@@ -318,14 +302,14 @@ public class SavingsActivity extends AppCompatActivity
 
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-            tempPerson = new Person();
+            ProtoTransactionData withdraw_transaction = new ProtoTransactionData();
 
             tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
             tempPerson.setLastName(sharedPreferences.getString("l_name", null));
             tempPerson.setSavings(sharedPreferences.getBoolean("has_savings", false));
             tempPerson.setChecking(sharedPreferences.getBoolean("has_checking", false));
             tempPerson.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
-            tempPerson.setCheckingBalance(11111.11);  //
+            tempPerson.setCheckingBalance(closing);
             tempPerson.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
 
             Intent myIntent = new Intent(SavingsActivity.this, SavingsActivity.class);
@@ -333,11 +317,21 @@ public class SavingsActivity extends AppCompatActivity
             myIntent.putExtra("the_user", tempPerson);
             dialog.dismiss();
 
+            // setup the transaction for DB storage
+            withdraw_transaction.setTransType(WITHDRAW);
+            withdraw_transaction.setAcctType("Checking");
+            withdraw_transaction.setAmount(amount);
+            withdraw_transaction.setOpenBalance(open);
+            withdraw_transaction.setClosingBalance(closing);
 
+            the_db.addTransaction(withdraw_transaction);
 
+            // to ensure balance is current when user turns off the app
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putFloat("chrck_bal", (float) tempPerson.getCheckingBalance());
+            editor.apply();
             startActivity(myIntent);
 
-            Toast.makeText(SavingsActivity.this, "TWO obj created", Toast.LENGTH_LONG).show();
             //kills previous activity
             finish();
 
@@ -345,5 +339,5 @@ public class SavingsActivity extends AppCompatActivity
       }, 1500);
    } // end withdraw
 
-}
+} // end SavingsActivity
 
