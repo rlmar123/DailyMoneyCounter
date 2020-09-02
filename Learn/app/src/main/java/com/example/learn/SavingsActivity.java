@@ -84,7 +84,7 @@ public class SavingsActivity extends AppCompatActivity
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
-      //the_db.clearDatabase();
+      // the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
       our_item_list = the_db.getAllTransactions();

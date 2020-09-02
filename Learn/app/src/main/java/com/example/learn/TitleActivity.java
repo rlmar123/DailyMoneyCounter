@@ -58,8 +58,8 @@ public class TitleActivity extends AppCompatActivity
       title_db = new OurDB(this);
 
       //clears out shared prefs
-    //  sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-    //  sharedPreferences.edit().clear().commit();
+      //sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+     // sharedPreferences.edit().clear().commit();
 
       start_button = findViewById(R.id.start_button);
 

@@ -63,7 +63,7 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       holder.open_bal.setText("Opening Balance : " + formatter.format(some_item.getOpenBal()));
       holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
       holder.amount.setText("Amount : " + formatter.format(some_item.getAmount()));
-      holder.date.setText("01/01/1900");
+      holder.date.setText(some_item.getTransType());
 
 
    }
