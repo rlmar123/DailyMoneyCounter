@@ -170,7 +170,6 @@ public class SavingsActivity extends AppCompatActivity
 
    private void createSubtractPopupDialog()
    {
-
       builder = new AlertDialog.Builder(this);
       View view = getLayoutInflater().inflate(R.layout.subtract_pop_up, null);
 
@@ -196,9 +195,18 @@ public class SavingsActivity extends AppCompatActivity
          public void onClick(View v)
          {
             if(!(withdraw_text_savings.getText().toString().isEmpty()))
-            {
-               Toast.makeText(SavingsActivity.this, "Withdraw is good...", Toast.LENGTH_LONG).show();
-               withdraw();
+            {  String string_amount = withdraw_text_savings.getText().toString();
+               double withdrawal = Double.parseDouble(string_amount);
+
+               double checking = Math.round(the_user.getCheckingBalance() * 100.0) / 100.0;
+               if(checking >= withdrawal)
+               {
+                  Toast.makeText(SavingsActivity.this, "Withdraw is good...", Toast.LENGTH_LONG).show();
+                  withdraw();
+               }
+
+               else
+                  Toast.makeText(SavingsActivity.this, "Insufficient Funds...", Toast.LENGTH_LONG).show();
             }
 
             else

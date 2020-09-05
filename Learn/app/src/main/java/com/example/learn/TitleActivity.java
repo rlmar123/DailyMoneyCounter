@@ -58,7 +58,7 @@ public class TitleActivity extends AppCompatActivity
       title_db = new OurDB(this);
 
       //clears out shared prefs
-      //sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+      sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
      // sharedPreferences.edit().clear().commit();
 
       start_button = findViewById(R.id.start_button);
@@ -70,8 +70,11 @@ public class TitleActivity extends AppCompatActivity
          public void onClick(View v)
          {
 
-            myByPassMethod();
-            createOpenPopupDialog();
+            if(sharedPreferences.getString("f_name", null) != null)
+               myByPassMethod();
+
+            else
+               createOpenPopupDialog();
          }
       });
 
@@ -232,8 +235,6 @@ public class TitleActivity extends AppCompatActivity
       // WE need to pass person object
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-      if(sharedPreferences.getString("f_name", null) != null)
-      {
          // new person obj
          user = new Person();
 
@@ -251,7 +252,7 @@ public class TitleActivity extends AppCompatActivity
          startActivity(myByPassIntent);
          Log.d("ProtoTransactionData_1", "my_by_pass " + sharedPreferences.getFloat("chrck_bal", -1));
          finish();
-      }
+
 
    }
 
