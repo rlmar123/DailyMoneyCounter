@@ -17,12 +17,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_light">
+            android:background="@drawable/gradient_bg">
 
             <TextView
                 android:id="@+id/first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
                 android:text="Open Balance : $00000" />
 
             <TextView
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="89dp"
                 android:layout_toRightOf="@id/first"
+                android:textColor="#FFFFFF"
                 android:text="Open Balance : $00000" />
 
             <TextView
@@ -38,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/second"
+                android:textColor="#FFFFFF"
                 android:text="Open Balance : $00000" />
 
 
@@ -49,6 +52,7 @@
                 android:layout_marginLeft="89dp"
                 android:layout_marginTop="0dp"
                 android:layout_toRightOf="@id/third"
+                android:textColor="#FFFFFF"
                 android:text="Open Balance : $00000" />
 
             <Button

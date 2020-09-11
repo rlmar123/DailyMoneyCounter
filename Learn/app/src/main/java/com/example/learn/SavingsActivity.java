@@ -9,15 +9,10 @@ import android.os.Bundle;
 import com.example.learn.Data.OurDB;
 import com.example.learn.Model.Person;
 import com.example.learn.Model.ProtoTransactionData;
-import com.example.learn.Model.TransactionData;
-import com.example.learn.Model.TransactionDataViewModel;
 import com.example.learn.UI.TestRecycleView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,13 +79,13 @@ public class SavingsActivity extends AppCompatActivity
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
-      // the_db.clearDatabase();
+      the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
       our_item_list = the_db.getAllTransactions();
 
       //connect to activity_main.xml widget
-      recycler_view = findViewById(R.id.recycler);
+      recycler_view = findViewById(R.id.a_recycler);
       recycler_view.setHasFixedSize(true);
       recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
@@ -108,6 +103,19 @@ public class SavingsActivity extends AppCompatActivity
          public void onClick(View view) {
 
             createSubtractPopupDialog();
+         }
+      });
+
+      FloatingActionButton midFab = findViewById(R.id.mid_fab);
+
+      //this will clear the db if user hits the mid_fab
+      midFab.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            // the_db.clearDatabase();
+            //we need to clear shared prefs account bal to 0
+            //
+            Toast.makeText(SavingsActivity.this, "Mid works", Toast.LENGTH_LONG).show();
          }
       });
 

@@ -64,8 +64,6 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
       holder.amount.setText("Amount : " + formatter.format(some_item.getAmount()));
       holder.date.setText(some_item.getTransType());
-
-
    }
 
    /////pick up from here
@@ -89,10 +87,6 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       public TextView closing_bal = null;
       public TextView amount = null;
       public TextView date = null;
-
-
-   //   public Button editButton = null;
-   //   public Button deleteButton = null;
 
       public int id;
 
