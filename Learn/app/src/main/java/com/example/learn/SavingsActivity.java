@@ -79,7 +79,7 @@ public class SavingsActivity extends AppCompatActivity
       Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
-      the_db.clearDatabase();
+     // the_db.clearDatabase();
 
       our_item_list = new ArrayList<ProtoTransactionData>();
       our_item_list = the_db.getAllTransactions();
@@ -111,10 +111,9 @@ public class SavingsActivity extends AppCompatActivity
       //this will clear the db if user hits the mid_fab
       midFab.setOnClickListener(new View.OnClickListener() {
          @Override
-         public void onClick(View v) {
-            // the_db.clearDatabase();
-            //we need to clear shared prefs account bal to 0
-            //
+         public void onClick(View v)
+         {
+            erase();
             Toast.makeText(SavingsActivity.this, "Mid works", Toast.LENGTH_LONG).show();
          }
       });
@@ -354,6 +353,32 @@ public class SavingsActivity extends AppCompatActivity
          }
       }, 1500);
    } // end withdraw
+
+   private void erase()
+   {
+      sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+      sharedPreferences.edit().clear().commit();
+
+      // clears entire db
+      the_db.clearDatabase();
+
+      // this restarts the SavingsActivity and goes back to the title activity
+      new Handler().postDelayed(new Runnable()
+      {
+         @Override
+         public void run()
+         {
+
+            Intent titleIntent = new Intent(SavingsActivity.this, TitleActivity.class);
+            startActivity(titleIntent);
+
+            //kills previous activity
+            finish();
+
+         }
+      }, 1500);
+
+   } // end erase
 
 } // end SavingsActivity
 

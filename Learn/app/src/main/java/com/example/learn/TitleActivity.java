@@ -59,7 +59,7 @@ public class TitleActivity extends AppCompatActivity
 
       //clears out shared prefs
       sharedPreferences =  getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-      // sharedPreferences.edit().clear().commit();
+      //sharedPreferences.edit().clear().commit();
 
       start_button = findViewById(R.id.start_button);
 
