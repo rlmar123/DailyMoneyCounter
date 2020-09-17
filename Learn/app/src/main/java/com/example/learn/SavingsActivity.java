@@ -84,6 +84,8 @@ public class SavingsActivity extends AppCompatActivity
       our_item_list = new ArrayList<ProtoTransactionData>();
       our_item_list = the_db.getAllTransactions();
 
+      Log.d("ProtoTransactionData_1", "From save activity " + the_db.getCount());
+
       //connect to activity_main.xml widget
       recycler_view = findViewById(R.id.a_recycler);
       recycler_view.setHasFixedSize(true);
