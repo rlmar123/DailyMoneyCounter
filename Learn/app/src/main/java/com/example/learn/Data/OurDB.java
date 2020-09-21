@@ -34,6 +34,7 @@ public class OurDB extends SQLiteOpenHelper
               + UtilVar.TRANSACTION_ID + " INTEGER PRIMARY KEY," + UtilVar.TRANS_TYPE + " TEXT,"
               + UtilVar.ACCT_TYPE + " TEXT," + UtilVar.OPEN_BALANCE + " DOUBLE," + UtilVar.CLOSE_BAANCE + " DOUBLE," + UtilVar.TRANS_AMOUNT + " DOUBLE" + ")";
 
+      Log.d("DBHandler", "addContact: " + "db creatsd");
       // creating our table
       db.execSQL(CREATE_ITEM_TABLE);
 
@@ -44,7 +45,7 @@ public class OurDB extends SQLiteOpenHelper
    {
       String DROP_THE_TABLE = "DROP IF TABLE EXISTS";
       db.execSQL(DROP_THE_TABLE, new String[]{UtilVar.DATABASE_NAME});
-
+      Log.d("DBHandler", "addContact: " + "db creatsd");
       //Create a table again
       onCreate(db);
 
@@ -62,14 +63,12 @@ public class OurDB extends SQLiteOpenHelper
       values.put(UtilVar.OPEN_BALANCE, transaction.getOpenBal());
       values.put(UtilVar.CLOSE_BAANCE, transaction.getClosingBal());
       values.put(UtilVar.TRANS_AMOUNT, transaction.getAmount());
-
-      //date time stamp
-   //   values.put(UtilVariables.KEY_DATE, java.lang.System.currentTimeMillis());
+    ///  values.put(UtilVar.TRANS_DATE, transaction.getTransDate());
 
       //Insert the row
       db.insert(UtilVar.TABLE_NAME, null, values);
 
-      Log.d("DBHandler", "addContact: " + "item added");
+   //   Log.d("DBHandler", "addContact: " + transaction.getTransDate());
 
       //closing db connection!
       db.close();
@@ -89,7 +88,7 @@ public class OurDB extends SQLiteOpenHelper
       //     String selectAll = "SELECT * FROM " + UtilVariables.TABLE_NAME;
 
       Cursor cursor = db.query(UtilVar.TABLE_NAME,
-              new String[]{ UtilVar.TRANSACTION_ID,
+              new String[]{UtilVar.TRANSACTION_ID,
                       UtilVar.TRANS_TYPE,
                       UtilVar.ACCT_TYPE,
                       UtilVar.OPEN_BALANCE,
@@ -111,6 +110,7 @@ public class OurDB extends SQLiteOpenHelper
             the_trans_obj.setOpenBalance(cursor.getDouble(3));
             the_trans_obj.setClosingBalance(cursor.getDouble(4));
             the_trans_obj.setAmount(cursor.getDouble(5));
+      //      the_trans_obj.setTransDate(cursor.getString(6));
 
             //converting timestamp
         //    DateFormat myDateFormatter = DateFormat.getDateInstance();

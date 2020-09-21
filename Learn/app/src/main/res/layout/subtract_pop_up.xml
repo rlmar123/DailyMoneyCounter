@@ -49,9 +49,17 @@
                 android:text="Balance"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+            <EditText
+                android:id="@+id/diff_description_text"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_below="@+id/difference_text"
+                android:ems="10"
+                android:hint="Transaction Description"
+                android:inputType="textAutoComplete"/>
             <Button
                 android:id="@+id/add_confirm_button"
-                android:layout_below="@id/difference_text"
+                android:layout_below="@id/diff_description_text"
                 android:layout_width="450dp"
                 android:layout_height="75dp"
                 android:text="Confirm"/>

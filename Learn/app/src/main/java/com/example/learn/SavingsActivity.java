@@ -3,7 +3,9 @@ package com.example.learn;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DateFormat;
 import android.icu.text.NumberFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
 import com.example.learn.Data.OurDB;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SavingsActivity extends AppCompatActivity
@@ -43,11 +47,14 @@ public class SavingsActivity extends AppCompatActivity
    private TextView balance_text_savings = null;
    private EditText deposit_text_savings = null;
    private TextView sum_text_savings = null;
+   private EditText add_description_text = null;
 
    // subtract_pop_up.xml widgets
    private TextView withdrawBal_text_savings = null;
    private EditText withdraw_text_savings = null;
    private TextView diff_text_savings = null;
+   private EditText sub_description_text = null;
+
 
    private Button confirm_button_savings = null;
    private Button cancel_button_savings = null;
@@ -144,13 +151,13 @@ public class SavingsActivity extends AppCompatActivity
       balance_text_savings = view.findViewById(R.id.balance_text);
       deposit_text_savings = view.findViewById(R.id.deposit_text);
       sum_text_savings = view.findViewById(R.id.sum_text);
-
+      add_description_text = view.findViewById(R.id.add_description_text);
       confirm_button_savings = view.findViewById(R.id.add_confirm_button);
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
-      // we will use person savings bal here!!!!
-      balance_text_savings.setText("Balance : " + "" + formatter.format(the_user.getCheckingBalance()));
 
+      balance_text_savings.setText("Balance : " + "" + formatter.format(the_user.getCheckingBalance()));
+      Log.d("ProtoTransactionData_1", "From save activity " + add_description_text.getText().toString());
       builder.setView(view);
       dialog = builder.create();// creating our dialog object
       dialog.show();// important step!
@@ -162,7 +169,9 @@ public class SavingsActivity extends AppCompatActivity
          {
           //  Toast.makeText(SavingsActivity.this, "CLICK CLICK CLICK", Toast.LENGTH_LONG).show();
             if(!(deposit_text_savings.getText().toString().isEmpty()))
+            {
                deposit();
+            Log.d("ProtoTransactionData_1", "From save activity " + add_description_text.getText().toString());}
 
             else
                Toast.makeText(SavingsActivity.this, "Deposit is blank...", Toast.LENGTH_LONG).show();
@@ -188,7 +197,7 @@ public class SavingsActivity extends AppCompatActivity
       withdrawBal_text_savings = view.findViewById(R.id.withdraw_balance_text);
       withdraw_text_savings = view.findViewById(R.id.withdraw_text);
       diff_text_savings = view.findViewById(R.id.difference_text);
-
+      sub_description_text = view.findViewById(R.id.diff_description_text);
       confirm_button_savings = view.findViewById(R.id.add_confirm_button);
       cancel_button_savings = view.findViewById(R.id.add_cancel_button);
 
@@ -211,6 +220,7 @@ public class SavingsActivity extends AppCompatActivity
                if(checking >= withdrawal)
                {
                   Toast.makeText(SavingsActivity.this, "Withdraw is good...", Toast.LENGTH_LONG).show();
+                  Log.d("ProtoTransactionData_1", "From save activity " + sub_description_text.getText().toString());
                   withdraw();
                }
 
@@ -277,6 +287,7 @@ public class SavingsActivity extends AppCompatActivity
             deposit_transaction.setAmount(amount);
             deposit_transaction.setOpenBalance(open);
             deposit_transaction.setClosingBalance(closing);
+     //       deposit_transaction.setTransDate("7/8/99");
 
             the_db.addTransaction(deposit_transaction);
 
@@ -299,7 +310,7 @@ public class SavingsActivity extends AppCompatActivity
    {
       NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-      final String WITHDRAW = "Withdraw";
+      final String WITHDRAW = "Withdrawal";
       String the_amount = withdraw_text_savings.getText().toString().trim();
 
       final double open = the_user.getCheckingBalance();
@@ -319,6 +330,9 @@ public class SavingsActivity extends AppCompatActivity
 
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
+            String pattern = "MM/dd/yyyy HH:mm:ss";
+
+
             ProtoTransactionData withdraw_transaction = new ProtoTransactionData();
 
             tempPerson.setFirstName(sharedPreferences.getString("f_name", null));
@@ -337,9 +351,10 @@ public class SavingsActivity extends AppCompatActivity
             // setup the transaction for DB storage
             withdraw_transaction.setTransType(WITHDRAW);
             withdraw_transaction.setAcctType("Checking");
-            withdraw_transaction.setAmount(amount);
             withdraw_transaction.setOpenBalance(open);
             withdraw_transaction.setClosingBalance(closing);
+            withdraw_transaction.setAmount(amount);
+       //     withdraw_transaction.setTransDate("7/8/99");
 
             the_db.addTransaction(withdraw_transaction);
 

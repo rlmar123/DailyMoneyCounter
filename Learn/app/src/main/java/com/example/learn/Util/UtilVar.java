@@ -17,4 +17,6 @@ public class UtilVar
    public static final String OPEN_BALANCE = "open_balance";
    public static final String CLOSE_BAANCE = "close_balance";
    public static final String TRANS_AMOUNT = "transaction_amount";
+   public static final String TRANS_DATE = "transaction_date";
+   public static final String TRANS_DESCRIPTION = "transaction_description";
 }

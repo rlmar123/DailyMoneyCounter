@@ -21,55 +21,54 @@
 
             <TextView
                 android:id="@+id/first"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:text="Open Balance : $00000" />
+                android:text="Open Balance : $00000"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/second"
-                android:gravity="left"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="60dp"
-                android:layout_toRightOf="@id/first"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/first"
+                android:gravity="left"
                 android:text="Open Balance : $00000"
                 android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/third"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/second"
-                android:textColor="#FFFFFF"
-                android:text="Open Balance : $00000" />
+                android:text="Open Balance : $00000"
+                android:textColor="#FFFFFF" />
 
 
             <TextView
                 android:id="@+id/fourth"
-                android:gravity="left"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/second"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="0dp"
-                android:layout_toRightOf="@id/third"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/third"
+                android:gravity="left"
                 android:text="Open Balance : $00000"
                 android:textColor="#FFFFFF" />
 
-            <Button
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/fifth"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/third"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp" />
-
-            <Button
-                android:layout_width="wrap_content"
+                android:layout_below="@id/fourth"
+                android:gravity="left"
+                android:text="Open Balance : $00000"
+                android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/sixth"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fourth"/>
+                android:layout_below="@id/fifth"
+                android:gravity="left"
+                android:text="Open Balance : $00000"
+                android:textColor="#FFFFFF" />
 
         </RelativeLayout>
 

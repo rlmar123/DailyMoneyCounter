@@ -11,6 +11,7 @@ public class ProtoTransactionData
 
    private String trans_type;
    private String acct_type;
+ //  private String trans_date;
 
    private double open_bal;
    private double closing_bal;
@@ -67,6 +68,9 @@ public class ProtoTransactionData
 
    public double getAmount()
    {return amount;}
+/*
+   public String getTransDate()
+   {return trans_date;} */
 
 
    // setters
@@ -87,6 +91,9 @@ public class ProtoTransactionData
 
    public void setAmount(double amount)
    {this.amount = amount;}
+
+  /* public void setTransDate(String trans_date)
+   {this.trans_date = trans_date;} */
 } //end CLASS
 
 

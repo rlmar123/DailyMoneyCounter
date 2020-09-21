@@ -2,7 +2,9 @@ package com.example.learn.UI;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.icu.text.DateFormat;
 import android.icu.text.NumberFormat;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import com.example.learn.Model.ProtoTransactionData;
 import com.example.learn.Model.TransactionData;
 import com.example.learn.R;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -55,18 +59,21 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
    @Override
    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
    {
+
+
       // to format into dollar format
       NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
       ProtoTransactionData some_item = test_item_list.get(position);
 
       holder.open_bal.setText("Opening Balance : " + formatter.format(some_item.getOpenBal()));
-      holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
       holder.amount.setText("Amount : " + formatter.format(some_item.getAmount()));
-      holder.date.setText(some_item.getTransType());
+      holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
+      holder.trans_type.setText("Amount : " + formatter.format(some_item.getAmount()));
+      holder.trans_type.setText(some_item.getTransType());
+      holder.date.setText("Date : ");
+      holder.description.setText("Description : ");
    }
-
-   /////pick up from here
 
    public void setNoDos(List<ProtoTransactionData> trans_data)
    {
@@ -86,7 +93,9 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       public TextView open_bal = null;
       public TextView closing_bal = null;
       public TextView amount = null;
+      public TextView trans_type = null;
       public TextView date = null;
+      public TextView description = null;
 
       public int id;
 
@@ -97,9 +106,12 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
          the_context = the_ctx;
 
          open_bal = itemView.findViewById(R.id.first);
-         closing_bal = itemView.findViewById(R.id.third);
          amount = itemView.findViewById(R.id.second);
-         date = itemView.findViewById(R.id.fourth);
+         closing_bal = itemView.findViewById(R.id.third);
+         trans_type = itemView.findViewById(R.id.fourth);
+         date = itemView.findViewById(R.id.fifth);
+         description = itemView.findViewById(R.id.sixth);
+
 
 
     /*   editButton = itemView.findViewById(R.id.the_edit_button);
