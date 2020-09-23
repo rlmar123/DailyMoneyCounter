@@ -11,12 +11,14 @@ public class ProtoTransactionData
 
    private String trans_type;
    private String acct_type;
- //  private String trans_date;
 
    private double open_bal;
    private double closing_bal;
 
    private double amount;
+
+   private String trans_date;
+   private String trans_description;
 
    public ProtoTransactionData()
    {
@@ -52,30 +54,33 @@ public class ProtoTransactionData
 
    // getters
    public int getTransId()
-   {return trans_id;}
+   {return this.trans_id;}
 
    public String getTransType()
-   {return trans_type;}
+   {return this.trans_type;}
 
    public String getAcctType()
-   {return acct_type;}
+   {return this.acct_type;}
 
    public double getOpenBal()
-   {return open_bal;}
+   {return this.open_bal;}
 
    public double getClosingBal()
-   {return closing_bal;}
+   {return this.closing_bal;}
 
    public double getAmount()
-   {return amount;}
-/*
+   {return this.amount;}
+
    public String getTransDate()
-   {return trans_date;} */
+   {return this.trans_date;}
+
+   public String getTransDescription()
+   {return this.trans_description;}
 
 
    // setters
    public void setTransId(int id)
-   {trans_id = id;}
+   {this.trans_id = id;}
 
    public void setTransType(String trans_type)
    {this.trans_type = trans_type;}
@@ -92,8 +97,13 @@ public class ProtoTransactionData
    public void setAmount(double amount)
    {this.amount = amount;}
 
-  /* public void setTransDate(String trans_date)
-   {this.trans_date = trans_date;} */
+   public void setTransDate(String trans_date)
+   {this.trans_date = trans_date;}
+
+   public void setTransDescription(String trans_description)
+   {this.trans_description = trans_description;}
+
+
 } //end CLASS
 
 

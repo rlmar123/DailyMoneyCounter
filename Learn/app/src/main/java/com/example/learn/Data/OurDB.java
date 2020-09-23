@@ -31,8 +31,10 @@ public class OurDB extends SQLiteOpenHelper
    {
       //create table _name
       String CREATE_ITEM_TABLE = "CREATE TABLE " + UtilVar.TABLE_NAME + "("
-              + UtilVar.TRANSACTION_ID + " INTEGER PRIMARY KEY," + UtilVar.TRANS_TYPE + " TEXT,"
-              + UtilVar.ACCT_TYPE + " TEXT," + UtilVar.OPEN_BALANCE + " DOUBLE," + UtilVar.CLOSE_BAANCE + " DOUBLE," + UtilVar.TRANS_AMOUNT + " DOUBLE" + ")";
+      + UtilVar.TRANSACTION_ID + " INTEGER PRIMARY KEY," + UtilVar.TRANS_TYPE + " TEXT,"
+      + UtilVar.ACCT_TYPE + " TEXT," + UtilVar.OPEN_BALANCE + " DOUBLE,"
+      + UtilVar.CLOSE_BAANCE + " DOUBLE," + UtilVar.TRANS_AMOUNT + " DOUBLE,"
+      + UtilVar.TRANS_DATE + " TEXT," + UtilVar.TRANS_DESCRIPTION + " TEXT" + ")";
 
       Log.d("DBHandler", "addContact: " + "db creatsd");
       // creating our table
@@ -63,12 +65,13 @@ public class OurDB extends SQLiteOpenHelper
       values.put(UtilVar.OPEN_BALANCE, transaction.getOpenBal());
       values.put(UtilVar.CLOSE_BAANCE, transaction.getClosingBal());
       values.put(UtilVar.TRANS_AMOUNT, transaction.getAmount());
-    ///  values.put(UtilVar.TRANS_DATE, transaction.getTransDate());
+      values.put(UtilVar.TRANS_DATE, transaction.getTransDate());
+      values.put(UtilVar.TRANS_DESCRIPTION, transaction.getTransDescription());
 
       //Insert the row
       db.insert(UtilVar.TABLE_NAME, null, values);
 
-   //   Log.d("DBHandler", "addContact: " + transaction.getTransDate());
+  //   Log.d("DBHandler", "addContact: " + transaction.getTransDate());
 
       //closing db connection!
       db.close();
@@ -93,7 +96,9 @@ public class OurDB extends SQLiteOpenHelper
                       UtilVar.ACCT_TYPE,
                       UtilVar.OPEN_BALANCE,
                       UtilVar.CLOSE_BAANCE,
-                      UtilVar.TRANS_AMOUNT},
+                      UtilVar.TRANS_AMOUNT,
+                       UtilVar.TRANS_DATE,
+                       UtilVar.TRANS_DESCRIPTION},
               null, null, null, null,
               UtilVar.TRANSACTION_ID + " ASC");
 
@@ -110,7 +115,8 @@ public class OurDB extends SQLiteOpenHelper
             the_trans_obj.setOpenBalance(cursor.getDouble(3));
             the_trans_obj.setClosingBalance(cursor.getDouble(4));
             the_trans_obj.setAmount(cursor.getDouble(5));
-      //      the_trans_obj.setTransDate(cursor.getString(6));
+            the_trans_obj.setTransDate(cursor.getString(6));
+            the_trans_obj.setTransDescription(cursor.getString(7));
 
             //converting timestamp
         //    DateFormat myDateFormatter = DateFormat.getDateInstance();

@@ -287,7 +287,8 @@ public class SavingsActivity extends AppCompatActivity
             deposit_transaction.setAmount(amount);
             deposit_transaction.setOpenBalance(open);
             deposit_transaction.setClosingBalance(closing);
-     //       deposit_transaction.setTransDate("7/8/99");
+            deposit_transaction.setTransDate("7/8/20");
+            deposit_transaction.setTransDescription("19/8/20");
 
             the_db.addTransaction(deposit_transaction);
 
@@ -354,7 +355,8 @@ public class SavingsActivity extends AppCompatActivity
             withdraw_transaction.setOpenBalance(open);
             withdraw_transaction.setClosingBalance(closing);
             withdraw_transaction.setAmount(amount);
-       //     withdraw_transaction.setTransDate("7/8/99");
+            withdraw_transaction.setTransDate("7/8/99");
+            withdraw_transaction.setTransDescription("19/8/99");
 
             the_db.addTransaction(withdraw_transaction);
 

@@ -71,8 +71,8 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
       holder.closing_bal.setText("Closing Balance : " + formatter.format(some_item.getClosingBal()));
       holder.trans_type.setText("Amount : " + formatter.format(some_item.getAmount()));
       holder.trans_type.setText(some_item.getTransType());
-      holder.date.setText("Date : ");
-      holder.description.setText("Description : ");
+      holder.date.setText("Date : " + some_item.getTransDate());
+      holder.description.setText("Description : " + some_item.getTransDescription());
    }
 
    public void setNoDos(List<ProtoTransactionData> trans_data)

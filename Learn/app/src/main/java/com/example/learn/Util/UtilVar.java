@@ -2,13 +2,12 @@ package com.example.learn.Util;
 
 public class UtilVar
 {
-   //Database related items
-   public static final int DATABASE_VERSION = 1;
-   public static final String DATABASE_NAME = "transaction_db";
+   //Database related items, used to be 1
+   public static final int DATABASE_VERSION = 2;
+   public static final String DATABASE_NAME = "new_transaction_db";
    public static final String TABLE_NAME = "transaction_data";
 
    //items table columns names
-
    //used for primary key
    public static final String TRANSACTION_ID = "transaction_id";
 
