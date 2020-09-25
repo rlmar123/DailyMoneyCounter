@@ -29,7 +29,7 @@ public class TitleActivity extends AppCompatActivity
    private EditText savings_account_field = null;
    private EditText checking_account_field = null;
 
-   // savings_pop_up.xml widgets
+   // delete_db_popup.xmll widgets
    private EditText savings_balance_text = null;
 
    // checking_pop_up.xml widgets
@@ -122,31 +122,6 @@ public class TitleActivity extends AppCompatActivity
       });
 
    } // end createOpenPopupDialog
-
-
-/*
-   private void createCheckingDialog()
-   {
-      builder = new AlertDialog.Builder(this);
-      View checking_view = getLayoutInflater().inflate(R.layout.checking_pop_up, null);
-
-      builder.setView(checking_view);
-      dialog = builder.create();// creating our dialog object
-      dialog.show();// important step!
-
-   } // end createCheckingDialog
-
-   private void createSavingsDialog()
-   {
-      builder = new AlertDialog.Builder(this);
-      View savings_view = getLayoutInflater().inflate(R.layout.savings_pop_up, null);
-
-      builder.setView(savings_view);
-      dialog = builder.create();// creating our dialog object
-      dialog.show();// important step!
-
-   } // end createSavingsDialog  */
-
 
    private void getData(View v)
    {

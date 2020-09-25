@@ -59,8 +59,6 @@ public class TestRecycleView extends RecyclerView.Adapter<TestRecycleView.ViewHo
    @Override
    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
    {
-
-
       // to format into dollar format
       NumberFormat formatter = NumberFormat.getCurrencyInstance();
 

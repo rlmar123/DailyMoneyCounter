@@ -36,7 +36,6 @@ public class OurDB extends SQLiteOpenHelper
       + UtilVar.CLOSE_BAANCE + " DOUBLE," + UtilVar.TRANS_AMOUNT + " DOUBLE,"
       + UtilVar.TRANS_DATE + " TEXT," + UtilVar.TRANS_DESCRIPTION + " TEXT" + ")";
 
-      Log.d("DBHandler", "addContact: " + "db creatsd");
       // creating our table
       db.execSQL(CREATE_ITEM_TABLE);
 
@@ -71,8 +70,6 @@ public class OurDB extends SQLiteOpenHelper
       //Insert the row
       db.insert(UtilVar.TABLE_NAME, null, values);
 
-  //   Log.d("DBHandler", "addContact: " + transaction.getTransDate());
-
       //closing db connection!
       db.close();
    }
@@ -83,7 +80,6 @@ public class OurDB extends SQLiteOpenHelper
    public List<ProtoTransactionData> getAllTransactions()
    {
       List<ProtoTransactionData> transaction_list = new ArrayList<>();
-     // String date_formatted = null;
 
       SQLiteDatabase db = this.getReadableDatabase();
 
@@ -97,8 +93,8 @@ public class OurDB extends SQLiteOpenHelper
                       UtilVar.OPEN_BALANCE,
                       UtilVar.CLOSE_BAANCE,
                       UtilVar.TRANS_AMOUNT,
-                       UtilVar.TRANS_DATE,
-                       UtilVar.TRANS_DESCRIPTION},
+                      UtilVar.TRANS_DATE,
+                      UtilVar.TRANS_DESCRIPTION},
               null, null, null, null,
               UtilVar.TRANSACTION_ID + " ASC");
 
@@ -118,13 +114,6 @@ public class OurDB extends SQLiteOpenHelper
             the_trans_obj.setTransDate(cursor.getString(6));
             the_trans_obj.setTransDescription(cursor.getString(7));
 
-            //converting timestamp
-        //    DateFormat myDateFormatter = DateFormat.getDateInstance();
-
-        //    date_formatted = myDateFormatter.format(new Date(cursor.getLong(5)).getTime());
-
-       //     the_item_obj.setDate(date_formatted);
-
             //add the_item_obj to our list
             transaction_list.add(the_trans_obj);
 
@@ -135,16 +124,12 @@ public class OurDB extends SQLiteOpenHelper
       return transaction_list;
    }
 
-
-
    public void clearDatabase()
    {
       String clearDBQuery = "DELETE FROM " + UtilVar.TABLE_NAME;
       SQLiteDatabase db = this.getReadableDatabase();
       db.execSQL(clearDBQuery);
    }
-
-
 
    //Get item count
    public int getCount()

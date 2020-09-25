@@ -55,6 +55,11 @@ public class SavingsActivity extends AppCompatActivity
    private TextView diff_text_savings = null;
    private EditText sub_description_text = null;
 
+   // delete_db_popup.xml widgets
+  private Button delete_db = null;
+  private Button cancel_delete = null;
+
+
 
    private Button confirm_button_savings = null;
    private Button cancel_button_savings = null;
@@ -76,14 +81,6 @@ public class SavingsActivity extends AppCompatActivity
       the_user = (Person) i.getSerializableExtra("the_user");
 
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-
-      Log.d("ProtoTransactionData_1", "F_name " + sharedPreferences.getString("f_name", null));
-      Log.d("ProtoTransactionData_1", "l_name " + sharedPreferences.getString("l_name", null));
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getInt("acct_num", 1));
-      Log.d("ProtoTransactionData_1", "From title activity " + the_user.getCheckingBalance());
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getFloat("save_bal", -1));
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_savings", false));
-      Log.d("ProtoTransactionData_1", "From title activity " + sharedPreferences.getBoolean("has_checking", false));
 
       the_db = new OurDB(this);
      // the_db.clearDatabase();
@@ -122,8 +119,7 @@ public class SavingsActivity extends AppCompatActivity
          @Override
          public void onClick(View v)
          {
-            erase();
-            Toast.makeText(SavingsActivity.this, "Mid works", Toast.LENGTH_LONG).show();
+            createDeletePopupDialog();
          }
       });
 
@@ -213,14 +209,15 @@ public class SavingsActivity extends AppCompatActivity
          public void onClick(View v)
          {
             if(!(withdraw_text_savings.getText().toString().isEmpty()))
-            {  String string_amount = withdraw_text_savings.getText().toString();
-               double withdrawal = Double.parseDouble(string_amount);
+            {
+               String string_amount = withdraw_text_savings.getText().toString();
 
+               double withdrawal = Double.parseDouble(string_amount);
                double checking = Math.round(the_user.getCheckingBalance() * 100.0) / 100.0;
+
                if(checking >= withdrawal)
                {
                   Toast.makeText(SavingsActivity.this, "Withdraw is good...", Toast.LENGTH_LONG).show();
-                  Log.d("ProtoTransactionData_1", "From save activity " + sub_description_text.getText().toString());
                   withdraw();
                }
 
@@ -229,7 +226,7 @@ public class SavingsActivity extends AppCompatActivity
             }
 
             else
-               Toast.makeText(SavingsActivity.this, "Withdraw is blank...", Toast.LENGTH_LONG).show();
+               Toast.makeText(SavingsActivity.this, "Missing a field...", Toast.LENGTH_LONG).show();
          }
       });
 
@@ -242,6 +239,38 @@ public class SavingsActivity extends AppCompatActivity
 
    }
 
+   private void createDeletePopupDialog()
+   {
+      builder = new AlertDialog.Builder(this);
+      View view = getLayoutInflater().inflate(R.layout.delete_db_popup, null);
+
+
+
+      // make connection to delete_db_popup.xml widgets
+      delete_db = view.findViewById(R.id.delete_db);
+      cancel_delete = view.findViewById(R.id.cancel);
+
+      builder.setView(view);
+      dialog = builder.create();// creating our dialog object
+      dialog.show();// important step!
+
+      delete_db.setOnClickListener(new View.OnClickListener()
+      {
+         @Override
+         public void onClick(View v)
+         {
+            erase();
+         }
+      });
+
+      cancel_delete.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+            dialog.dismiss();
+         }
+      });
+   }
+
    private void deposit()
    {
       NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -249,6 +278,7 @@ public class SavingsActivity extends AppCompatActivity
       final String DEPOSIT = "Deposit";
 
       String the_amount = deposit_text_savings.getText().toString().trim();
+      final String trans_desc = add_description_text.getText().toString().trim();
 
       final double open = the_user.getCheckingBalance();
       final double amount = Double.parseDouble(the_amount);
@@ -266,6 +296,11 @@ public class SavingsActivity extends AppCompatActivity
             Person tempPerson = new Person();
 
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+
+            String pattern = "MM/dd/yyyy HH:mm:ss";
+            DateFormat df = new SimpleDateFormat(pattern);
+            Date today = Calendar.getInstance().getTime();
+            String deposit_date = df.format(today);
 
             ProtoTransactionData deposit_transaction = new ProtoTransactionData();
 
@@ -287,8 +322,8 @@ public class SavingsActivity extends AppCompatActivity
             deposit_transaction.setAmount(amount);
             deposit_transaction.setOpenBalance(open);
             deposit_transaction.setClosingBalance(closing);
-            deposit_transaction.setTransDate("7/8/20");
-            deposit_transaction.setTransDescription("19/8/20");
+            deposit_transaction.setTransDate(deposit_date);
+            deposit_transaction.setTransDescription(trans_desc);
 
             the_db.addTransaction(deposit_transaction);
 
@@ -313,6 +348,7 @@ public class SavingsActivity extends AppCompatActivity
 
       final String WITHDRAW = "Withdrawal";
       String the_amount = withdraw_text_savings.getText().toString().trim();
+      final String trans_desc = sub_description_text.getText().toString().trim();
 
       final double open = the_user.getCheckingBalance();
       final double amount = Double.parseDouble(the_amount);
@@ -332,7 +368,9 @@ public class SavingsActivity extends AppCompatActivity
             sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
             String pattern = "MM/dd/yyyy HH:mm:ss";
-
+            DateFormat df = new SimpleDateFormat(pattern);
+            Date today = Calendar.getInstance().getTime();
+            String withdraw_date = df.format(today);
 
             ProtoTransactionData withdraw_transaction = new ProtoTransactionData();
 
@@ -355,8 +393,8 @@ public class SavingsActivity extends AppCompatActivity
             withdraw_transaction.setOpenBalance(open);
             withdraw_transaction.setClosingBalance(closing);
             withdraw_transaction.setAmount(amount);
-            withdraw_transaction.setTransDate("7/8/99");
-            withdraw_transaction.setTransDescription("19/8/99");
+            withdraw_transaction.setTransDate(withdraw_date);
+            withdraw_transaction.setTransDescription(trans_desc);
 
             the_db.addTransaction(withdraw_transaction);
 
@@ -373,6 +411,7 @@ public class SavingsActivity extends AppCompatActivity
       }, 1500);
    } // end withdraw
 
+   // THIS DELETES THE ENTIRE DB AND SHARED PREFS!!!!!!
    private void erase()
    {
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
@@ -387,13 +426,11 @@ public class SavingsActivity extends AppCompatActivity
          @Override
          public void run()
          {
-
             Intent titleIntent = new Intent(SavingsActivity.this, TitleActivity.class);
             startActivity(titleIntent);
 
             //kills previous activity
             finish();
-
          }
       }, 1500);
 

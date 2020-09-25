@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/last_name"
                 android:inputType="numberDecimal"
-                android:hint="Enter Opening Savings Balance : $"
+                android:hint="Opening Savings Balance : $"
                 android:textColorHint="#FF0000"/>
 
             <EditText
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/savings_answer"
                 android:inputType="numberDecimal"
-                android:hint="Enter Opening Checking Balance : $"
+                android:hint="Opening Checking Balance : $"
                 android:textColorHint="#FF0000"/>
 
             <Button

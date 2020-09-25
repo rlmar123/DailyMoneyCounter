@@ -11,32 +11,37 @@
         android:layout_marginBottom="8dp"
         app:contentPadding="8dp"
         android:elevation="11dp"
-        app:cardCornerRadius="100dp">
+        app:cardCornerRadius="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FBAB00"
+            android:background="@drawable/gradient_rg"
             android:padding="24dp">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="#0100FB"
-                android:text="Opening Savings Balance"
+                android:background="@drawable/gradient_bg"
+                android:text="Delete the contents?"
                 android:textAlignment="center"
                 android:textColor="#ffffff"
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
-            <EditText
-                android:id="@+id/first_name"
+            <Button
+                android:id="@+id/delete_db"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:hint="Enter opening savings balance : $0 "
-                android:textColorHint="#000000"/>
+                android:text="DELETE "/>
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/delete_db"
+                android:text="CANCEL"/>
 
 
         </RelativeLayout>
