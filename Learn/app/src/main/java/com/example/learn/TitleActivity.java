@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.learn.Data.OurDB;
 import com.example.learn.Model.Person;
@@ -45,6 +48,7 @@ public class TitleActivity extends AppCompatActivity
    private OurDB title_db = null;
 
    private int num = 0;
+   private TextView title_text = null;
 
    private static final String MESSAGE_ID = "person_prefs";
    private SharedPreferences sharedPreferences = null;;
@@ -62,7 +66,9 @@ public class TitleActivity extends AppCompatActivity
       //sharedPreferences.edit().clear().commit();
 
       start_button = findViewById(R.id.start_button);
+      title_text = findViewById(R.id.title_text);
 
+      leftAnim();
 
       start_button.setOnClickListener(new View.OnClickListener()
       {
@@ -80,6 +86,19 @@ public class TitleActivity extends AppCompatActivity
 
    } // end onCreate
 
+   private void startAnim()
+   {
+      Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim);
+      title_text.startAnimation(animation);
+
+   }
+
+   private void leftAnim()
+   {
+      Animation animation = AnimationUtils.loadAnimation(this, R.anim.left);
+      title_text.startAnimation(animation);
+
+   }
 
    private void createOpenPopupDialog()
    {
@@ -123,8 +142,7 @@ public class TitleActivity extends AppCompatActivity
 
    } // end createOpenPopupDialog
 
-   private void getData(View v)
-   {
+   private void getData(View v) {
       createPerson();
 
       // store user data in shared prefs
@@ -141,19 +159,33 @@ public class TitleActivity extends AppCompatActivity
       editor.putBoolean("has_checking", user.hasChecking());
 
       editor.putFloat("chrck_bal", (float) user.getCheckingBalance());
-      editor.putFloat("save_bal", (float)user.getSavingsBalance());
+      editor.putFloat("save_bal", (float) user.getSavingsBalance());
 
       editor.apply();
 
       // store user data in shared prefs
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
-      Intent nextIntent = new Intent(TitleActivity.this, SavingsActivity.class);
-      nextIntent.putExtra("the_user", user);
+      startAnim();
 
-      startActivity(nextIntent);
-      finish();
-   } // end getData
+      new Handler().postDelayed(new Runnable()
+      {
+         @Override
+         public void run()
+         {
+            Intent nextIntent = new Intent(TitleActivity.this, SavingsActivity.class);
+            nextIntent.putExtra("the_user", user);
+            startActivity(nextIntent);
+
+            //kills previous activity
+            finish();
+
+         }
+      }, 500);
+
+
+
+   }
 
 
    private void createPerson()
@@ -207,27 +239,37 @@ public class TitleActivity extends AppCompatActivity
 
    private void myByPassMethod()
    {
+
       // WE need to pass person object
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
          // new person obj
          user = new Person();
+      user.setFirstName(sharedPreferences.getString("f_name", null));
+      user.setLastName(sharedPreferences.getString("l_name", null));
+      user.setSavings(sharedPreferences.getBoolean("has_savings", false));
+      user.setChecking(sharedPreferences.getBoolean("has_checking", false));
+      user.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
+      user.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
+      user.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
 
-         user.setFirstName(sharedPreferences.getString("f_name", null));
-         user.setLastName(sharedPreferences.getString("l_name", null));
-         user.setSavings(sharedPreferences.getBoolean("has_savings", false));
-         user.setChecking(sharedPreferences.getBoolean("has_checking", false));
-         user.setAccountNumber(sharedPreferences.getInt("acct_num", -1));
-         user.setCheckingBalance(sharedPreferences.getFloat("chrck_bal", -1));
-         user.setSavingsBalance(sharedPreferences.getFloat("save_bal", -1));
+      startAnim();
 
-         Intent myByPassIntent = new Intent(TitleActivity.this, SavingsActivity.class);
-         myByPassIntent.putExtra("the_user", user);
+      new Handler().postDelayed(new Runnable()
+      {
+         @Override
+         public void run()
+         {
+            Intent myByPassIntent = new Intent(TitleActivity.this, SavingsActivity.class);
+            myByPassIntent.putExtra("the_user", user);
+            startActivity(myByPassIntent);
 
-         startActivity(myByPassIntent);
-         Log.d("ProtoTransactionData_1", "my_by_pass " + sharedPreferences.getFloat("chrck_bal", -1));
-         finish();
+            //kills previous activity
+            finish();
 
+
+         }
+      }, 1000);
 
    }
 
