@@ -220,7 +220,6 @@ public class TitleActivity extends AppCompatActivity
          user.setCheckingBalance(0.00);
       }
 
-
       //test savings_balance
       if(savings_balance > min)
       {
@@ -244,7 +243,7 @@ public class TitleActivity extends AppCompatActivity
       sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
 
          // new person obj
-         user = new Person();
+      user = new Person();
       user.setFirstName(sharedPreferences.getString("f_name", null));
       user.setLastName(sharedPreferences.getString("l_name", null));
       user.setSavings(sharedPreferences.getBoolean("has_savings", false));
